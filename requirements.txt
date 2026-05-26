@@ -1,13 +1,13 @@
 fastapi
 uvicorn
 python-multipart
-tensorflow
 opencv-python-headless
-mediapipe
+mediapipe==0.10.14
+tensorflow==2.13.1
+numpy==1.24.3
 librosa
 scikit-learn
 transformers
-torch
 speechrecognition
-numpy
 pillow
+protobuf==4.25.3
