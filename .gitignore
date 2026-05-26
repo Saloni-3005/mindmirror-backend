@@ -1,0 +1,15 @@
+ai_env/
+Lib/
+Scripts/
+share/
+etc/
+datasets/
+models/
+__pycache__/
+*.pyc
+*.h5
+pyvenv.cfg
+emotion_history.json
+MindMirror AI.txt
+voice_analysis/live.wav
+voice_analysis/test.wav

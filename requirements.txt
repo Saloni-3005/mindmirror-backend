@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+python-multipart
+tensorflow
+opencv-python-headless
+mediapipe
+librosa
+scikit-learn
+transformers
+torch
+speechrecognition
+numpy
+pillow

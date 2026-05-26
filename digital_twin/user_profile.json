@@ -1,0 +1,68 @@
+{
+    "emotion_history": [
+        {
+            "time": "11:59",
+            "emotion": "High Stress"
+        },
+        {
+            "time": "12:09",
+            "emotion": "Moderate Stress"
+        },
+        {
+            "time": "11:54",
+            "emotion": "High Stress"
+        },
+        {
+            "time": "12:53",
+            "emotion": "Moderate Stress"
+        },
+        {
+            "time": "13:14",
+            "emotion": "Moderate Stress"
+        }
+    ],
+    "stress_history": [
+        {
+            "time": "11:59",
+            "stress": 5
+        },
+        {
+            "time": "12:09",
+            "stress": 3
+        },
+        {
+            "time": "11:54",
+            "stress": 5
+        },
+        {
+            "time": "12:53",
+            "stress": 4
+        },
+        {
+            "time": "13:14",
+            "stress": 3
+        }
+    ],
+    "focus_history": [
+        {
+            "time": "11:59",
+            "focus": 2
+        },
+        {
+            "time": "12:09",
+            "focus": 2
+        },
+        {
+            "time": "11:54",
+            "focus": 3
+        },
+        {
+            "time": "12:53",
+            "focus": 3
+        },
+        {
+            "time": "13:14",
+            "focus": 3
+        }
+    ]
+}
