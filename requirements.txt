@@ -4,7 +4,7 @@ python-multipart
 opencv-python-headless
 mediapipe==0.10.14
 tensorflow==2.16.1
-numpy==1.24.3
+numpy==2.4.4
 librosa
 scikit-learn
 transformers
