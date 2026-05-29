@@ -11,3 +11,6 @@ transformers
 speechrecognition
 pillow
 protobuf==4.25.3
+supabase
+python-jose[cryptography]
+passlib
