@@ -5,6 +5,7 @@ import os
 import joblib  # pickle ki jagah
 
 # Line 10 change karo:
+BASE_DIR = os.path.dirname(__file__)  
 model = joblib.load(os.path.join(BASE_DIR, "voice_emotion_model.pkl"))
 scaler = joblib.load(os.path.join(BASE_DIR, "scaler.pkl"))
 # BASE_DIR = os.path.dirname(__file__)
