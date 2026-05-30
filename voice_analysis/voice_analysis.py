@@ -2,16 +2,20 @@ import numpy as np
 import librosa
 import pickle
 import os
+import joblib  # pickle ki jagah
 
-BASE_DIR = os.path.dirname(__file__)
+# Line 10 change karo:
+model = joblib.load(os.path.join(BASE_DIR, "voice_emotion_model.pkl"))
+scaler = joblib.load(os.path.join(BASE_DIR, "scaler.pkl"))
+# BASE_DIR = os.path.dirname(__file__)
 
-# model load
-with open(os.path.join(BASE_DIR,"voice_emotion_model.pkl"),"rb") as f:
-    model = pickle.load(f)
+# # model load
+# with open(os.path.join(BASE_DIR,"voice_emotion_model.pkl"),"rb") as f:
+#     model = pickle.load(f)
 
-# scaler load
-with open(os.path.join(BASE_DIR,"scaler.pkl"),"rb") as f:
-    scaler = pickle.load(f)
+# # scaler load
+# with open(os.path.join(BASE_DIR,"scaler.pkl"),"rb") as f:
+#     scaler = pickle.load(f)
 
 emotion_dict = {
     '01': 'neutral',

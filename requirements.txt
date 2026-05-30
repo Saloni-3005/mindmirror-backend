@@ -4,6 +4,7 @@ python-multipart
 opencv-python-headless
 mediapipe==0.10.14
 tensorflow==2.16.1
+joblib
 numpy==1.24.3
 librosa
 scikit-learn==1.6.1
