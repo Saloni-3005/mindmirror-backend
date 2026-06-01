@@ -33,7 +33,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Server par model retrain karo
 RUN python retrain.py
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
