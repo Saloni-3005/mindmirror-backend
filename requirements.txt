@@ -2,9 +2,8 @@ fastapi
 uvicorn
 python-multipart
 opencv-python-headless
-mediapipe==0.10.14
-tensorflow==2.17.0
-joblib
+mediapipe==0.10.21
+tensorflow==2.18.0
 numpy==2.0.2
 librosa
 scikit-learn==1.6.1
@@ -15,3 +14,4 @@ protobuf==4.25.3
 supabase
 python-jose[cryptography]
 passlib
+joblib
