@@ -87,7 +87,7 @@ def detect_emotion_from_image(image_bytes: bytes) -> str:
     if frame is None:
         return "Neutral"
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+    faces = face_cascade.detectMultiScale(gray, 1.1, 3, minSize=(30, 30))
     emotion_list = []
     for (x, y, w, h) in faces:
         face = cv2.resize(frame[y:y+h, x:x+w], (48, 48))

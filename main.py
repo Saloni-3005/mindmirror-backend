@@ -26,12 +26,13 @@ from database import (
 
 app = FastAPI(title="MindMirror AI API")
 
+# CORS origins — env var se lo taaki hardcode na karna pade
+_raw_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173")
+ALLOWED_ORIGINS = [o.strip() for o in _raw_origins.split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "https://mindmirror.vercel.app",  # apna Vercel domain
-    ],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -51,6 +52,7 @@ class FuseRequest(BaseModel):
     voice: str
     focus: str
     sentiment: str
+    attention_percent: int = 0
 
 # ── Auth Routes ───────────────────────────────────────────────────────────────
 
@@ -138,6 +140,7 @@ def fuse(body: FuseRequest, user=Depends(get_current_user)):
         rule_state=rule_state,
         stress_level=level,
         sentiment=body.sentiment,
+        attention_percent=getattr(body, "attention_percent", 0),
     )
 
     # ✅ Recommendation save karo
