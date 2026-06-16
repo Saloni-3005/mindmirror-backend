@@ -27,7 +27,7 @@ from database import (
 app = FastAPI(title="MindMirror AI API")
 
 # CORS origins — env var se lo taaki hardcode na karna pade
-_raw_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173")
+_raw_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,https://mindmirror-frontend.vercel.app")
 ALLOWED_ORIGINS = [o.strip() for o in _raw_origins.split(",") if o.strip()]
 
 app.add_middleware(
