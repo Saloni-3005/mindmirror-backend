@@ -56,8 +56,7 @@ def detect_face_emotion():
             face = face/255.0
             face = np.reshape(face,(1,48,48,3))
 
-            prediction = get_model.predict(face, verbose=0)
-
+            prediction = get_model().predict(face, verbose=0)
             emotion = emotion_labels[np.argmax(prediction)]
 
             emotion_list.append(emotion)
@@ -101,6 +100,6 @@ def detect_emotion_from_image(image_bytes: bytes) -> str:
     for (x, y, w, h) in faces:
         face = cv2.resize(frame[y:y+h, x:x+w], (48, 48))
         face = np.reshape(face / 255.0, (1, 48, 48, 3))
-        prediction = get_model.predict(face, verbose=0)
+        prediction = get_model().predict(face, verbose=0)
         emotion_list.append(emotion_labels[np.argmax(prediction)])
     return Counter(emotion_list).most_common(1)[0][0] if emotion_list else "Neutral"

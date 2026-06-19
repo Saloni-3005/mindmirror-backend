@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import time
+import numpy as np  # file ke top pe agar already nahi hai
 
 mp_face_mesh = mp.solutions.face_mesh
 
@@ -261,11 +262,11 @@ def check_attention():
     }
 
 # ✅ NAYA FUNCTION — single frame se attention check
+
 def detect_attention_from_image(image_bytes: bytes) -> dict:
-    frame = cv2.imdecode(
-        bytearray(image_bytes),
-        cv2.IMREAD_COLOR
-    )
+    nparr = np.frombuffer(image_bytes, np.uint8)
+    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    
     if frame is None:
         return {"focus": "Low", "attention_percent": 0, "blinks": 0, "drowsy": 0}
 
