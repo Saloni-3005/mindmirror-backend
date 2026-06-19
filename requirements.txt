@@ -3,12 +3,12 @@ uvicorn
 python-multipart
 opencv-python-headless
 mediapipe==0.10.14
-transformers==4.40.0
+tensorflow==2.16.1
 numpy==1.24.3
 librosa
 scikit-learn==1.6.1
 torch==2.4.0
-transformers
+transformers==4.40.0
 speechrecognition
 pillow
 protobuf==4.25.3
