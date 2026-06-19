@@ -5,10 +5,19 @@ import os
 import time
 from collections import Counter
 
+# BASE_DIR = os.path.dirname(__file__)
+# model_path = os.path.join(BASE_DIR, "emotion_model.keras")
+# model = load_model(model_path)
+
 BASE_DIR = os.path.dirname(__file__)
 model_path = os.path.join(BASE_DIR, "emotion_model.keras")
-model = load_model(model_path)
+model = None
 
+def get_model():
+    global model
+    if model is None:
+        model = load_model(model_path)
+    return model
 emotion_labels = ['Angry','Disgust','Fear','Happy','Sad','Surprise','Neutral']
 
 face_cascade = cv2.CascadeClassifier(
@@ -47,7 +56,7 @@ def detect_face_emotion():
             face = face/255.0
             face = np.reshape(face,(1,48,48,3))
 
-            prediction = model.predict(face, verbose=0)
+            prediction = get_model.predict(face, verbose=0)
 
             emotion = emotion_labels[np.argmax(prediction)]
 
@@ -92,6 +101,6 @@ def detect_emotion_from_image(image_bytes: bytes) -> str:
     for (x, y, w, h) in faces:
         face = cv2.resize(frame[y:y+h, x:x+w], (48, 48))
         face = np.reshape(face / 255.0, (1, 48, 48, 3))
-        prediction = model.predict(face, verbose=0)
+        prediction = get_model.predict(face, verbose=0)
         emotion_list.append(emotion_labels[np.argmax(prediction)])
     return Counter(emotion_list).most_common(1)[0][0] if emotion_list else "Neutral"
