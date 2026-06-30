@@ -3,6 +3,8 @@ from fastapi import FastAPI, UploadFile, File, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import os
+import asyncio
+import concurrent.futures
 
 from emotion_project.emotion_detect import detect_emotion_from_image
 from voice_analysis.voice_analysis import detect_voice_emotion
@@ -103,7 +105,19 @@ async def scan_voice(file: UploadFile = File(...)):
     audio_path = "voice_analysis/live.wav"
     with open(audio_path, "wb") as f:
         f.write(await file.read())
-    emotion = detect_voice_emotion()
+
+    loop = asyncio.get_event_loop()
+    try:
+        with concurrent.futures.ThreadPoolExecutor() as pool:
+            emotion = await asyncio.wait_for(
+                loop.run_in_executor(pool, detect_voice_emotion),
+                timeout=15.0
+            )
+    except asyncio.TimeoutError:
+        raise HTTPException(status_code=504, detail="Voice processing timed out")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Voice processing failed: {str(e)}")
+
     return {"voice_emotion": emotion}
 
 @app.post("/scan/sentiment")
