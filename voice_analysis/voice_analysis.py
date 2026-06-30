@@ -47,12 +47,12 @@
 #     print("Voice Emotion:", emotion)
 
 #     return emotion
-
 import numpy as np
 import soundfile as sf
 import librosa
 import os
 import joblib
+from scipy.signal import resample as scipy_resample
 
 BASE_DIR = os.path.dirname(__file__)
 model = joblib.load(os.path.join(BASE_DIR, "voice_emotion_model.pkl"))
@@ -68,17 +68,17 @@ def extract_features(file_name):
     audio, sample_rate = sf.read(file_name)
     print(f"[VOICE] Step A1: soundfile loaded, shape={audio.shape}, sr={sample_rate}", flush=True)
 
-    # Stereo ko mono mein convert karo agar zarurat ho
     if len(audio.shape) > 1:
         audio = np.mean(audio, axis=1)
-
     audio = audio.astype(np.float32)
+    print(f"[VOICE] Step A2: converted to mono, len={len(audio)}", flush=True)
 
-    # Resample to 22050 if needed (librosa ka resample function, audioread use nahi karta)
-    if sample_rate != 22050:
-        audio = librosa.resample(audio, orig_sr=sample_rate, target_sr=22050)
-        sample_rate = 22050
-    print(f"[VOICE] Step B: audio ready, len={len(audio)}, sr={sample_rate}", flush=True)
+    target_sr = 22050
+    if sample_rate != target_sr:
+        num_samples = int(len(audio) * target_sr / sample_rate)
+        audio = scipy_resample(audio, num_samples).astype(np.float32)
+        sample_rate = target_sr
+    print(f"[VOICE] Step B: resampled, len={len(audio)}, sr={sample_rate}", flush=True)
 
     mfccs = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40)
     print(f"[VOICE] Step C: mfcc extracted, shape={mfccs.shape}", flush=True)
@@ -94,7 +94,6 @@ def detect_voice_emotion():
     print(f"[VOICE] Starting detection for {audio_file}", flush=True)
 
     mfcc = extract_features(audio_file)
-
     mfcc = mfcc.reshape(1, -1)
     print(f"[VOICE] Step E: reshaped", flush=True)
 
