@@ -62,7 +62,6 @@ emotion_dict = {
     '01': 'neutral', '02': 'calm', '03': 'happy', '04': 'sad',
     '05': 'angry', '06': 'fearful', '07': 'disgust', '08': 'surprised'
 }
-
 def extract_features(file_name):
     print(f"[VOICE] Step A: loading audio file {file_name}", flush=True)
     audio, sample_rate = sf.read(file_name)
@@ -71,7 +70,12 @@ def extract_features(file_name):
     if len(audio.shape) > 1:
         audio = np.mean(audio, axis=1)
     audio = audio.astype(np.float32)
-    print(f"[VOICE] Step A2: converted to mono, len={len(audio)}", flush=True)
+
+    # ── Sirf pehle 5 second use karo (processing fast karne ke liye) ──
+    max_samples = sample_rate * 5
+    if len(audio) > max_samples:
+        audio = audio[:max_samples]
+    print(f"[VOICE] Step A2: converted to mono + trimmed, len={len(audio)}", flush=True)
 
     target_sr = 22050
     if sample_rate != target_sr:
@@ -80,7 +84,8 @@ def extract_features(file_name):
         sample_rate = target_sr
     print(f"[VOICE] Step B: resampled, len={len(audio)}, sr={sample_rate}", flush=True)
 
-    mfccs = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40)
+    print(f"[VOICE] Step B1: about to call mfcc...", flush=True)
+    mfccs = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40, n_fft=1024)
     print(f"[VOICE] Step C: mfcc extracted, shape={mfccs.shape}", flush=True)
 
     mfccs_processed = np.mean(mfccs.T, axis=0)
