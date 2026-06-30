@@ -49,6 +49,7 @@
 #     return emotion
 
 import numpy as np
+import soundfile as sf
 import librosa
 import os
 import joblib
@@ -58,20 +59,26 @@ model = joblib.load(os.path.join(BASE_DIR, "voice_emotion_model.pkl"))
 scaler = joblib.load(os.path.join(BASE_DIR, "scaler.pkl"))
 
 emotion_dict = {
-    '01': 'neutral',
-    '02': 'calm',
-    '03': 'happy',
-    '04': 'sad',
-    '05': 'angry',
-    '06': 'fearful',
-    '07': 'disgust',
-    '08': 'surprised'
+    '01': 'neutral', '02': 'calm', '03': 'happy', '04': 'sad',
+    '05': 'angry', '06': 'fearful', '07': 'disgust', '08': 'surprised'
 }
 
 def extract_features(file_name):
     print(f"[VOICE] Step A: loading audio file {file_name}", flush=True)
-    audio, sample_rate = librosa.load(file_name, sr=22050, res_type='kaiser_fast')
-    print(f"[VOICE] Step B: audio loaded, len={len(audio)}, sr={sample_rate}", flush=True)
+    audio, sample_rate = sf.read(file_name)
+    print(f"[VOICE] Step A1: soundfile loaded, shape={audio.shape}, sr={sample_rate}", flush=True)
+
+    # Stereo ko mono mein convert karo agar zarurat ho
+    if len(audio.shape) > 1:
+        audio = np.mean(audio, axis=1)
+
+    audio = audio.astype(np.float32)
+
+    # Resample to 22050 if needed (librosa ka resample function, audioread use nahi karta)
+    if sample_rate != 22050:
+        audio = librosa.resample(audio, orig_sr=sample_rate, target_sr=22050)
+        sample_rate = 22050
+    print(f"[VOICE] Step B: audio ready, len={len(audio)}, sr={sample_rate}", flush=True)
 
     mfccs = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40)
     print(f"[VOICE] Step C: mfcc extracted, shape={mfccs.shape}", flush=True)
