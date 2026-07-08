@@ -23,10 +23,18 @@ from database import (
     save_recommendation, save_prediction,
     get_predictions, get_recommendations
 )
-
+import numpy as np
+import librosa
 # ── App ───────────────────────────────────────────────────────────────────────
 
 app = FastAPI(title="MindMirror AI API")
+@app.on_event("startup")
+def warmup():
+    
+    print("[WARMUP] Warming up librosa/numba...", flush=True)
+    dummy = np.zeros(22050, dtype=np.float32)
+    librosa.feature.mfcc(y=dummy, sr=22050, n_mfcc=40, n_fft=1024)
+    print("[WARMUP] Done — mfcc ready!", flush=True)
 
 # CORS origins — env var se lo taaki hardcode na karna pade
 _raw_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,https://mindmirror-frontend.vercel.app")
